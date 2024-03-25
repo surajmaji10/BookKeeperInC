@@ -1,26 +1,6 @@
 #include<string.h>
 #include<stdio.h>
-#include "utility.c"
-
-char *DEPARTMENTS[] = {
-    "Computer Science & Engineering",
-    "Information Technology",
-    "Data Science & Artificial Intelligence",
-    "Electronics & Communication Engineering",
-    "Electrical Engineering",
-    "Mechanical Enginering",
-    "Civil Engineering"
-};
-
-char *DEPTS[] = {
-    "CS",
-    "IT",
-    "DA",
-    "EC",
-    "EE",
-    "ME",
-    "CE"
-};
+#include "utility.h"
 
 void displayDepartments(char* listDept[]){
     if(listDept!= NULL){
@@ -45,7 +25,9 @@ int checkValidDepartment(char* listDept[], char* deptInput){
         int found = 0;
         int n = (int)strlen(listDept);
         for(int i = 0; i < n; i++){
+            //printf("%s\n", listDept[i]);
             convertToUpperCase(deptInput, -1);
+           // printf("%s\n", deptInput);
             if(strcmp(listDept[i], deptInput) == 0){
                 found = 1;
                 return found;
@@ -55,6 +37,6 @@ int checkValidDepartment(char* listDept[], char* deptInput){
 
     }
 
-    return 1;
+    return -1;
 
 }

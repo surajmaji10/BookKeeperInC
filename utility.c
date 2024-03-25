@@ -1,6 +1,5 @@
-#include<string.h>
-#include<stdio.h>
-#include<ctype.h>
+#include "common.h"
+#include "utility.h"
 
 void drawDashDouble(int len){
     printf("\n");
@@ -17,19 +16,19 @@ void drawDashSingle(int len){
     printf("\n");
 }
 void drawStar(int len){
-    printf('\n');
+    printf("\n");
     for(int i = 0; i < len; i++){
         printf("%c", '*');
     }
-    printf('\n');
+    printf("\n");
 }
 
 void drawChar(char ch, int len){
-    printf('\n');
+    printf("\n");
     for(int i = 0; i < len; i++){
         printf("%c", ch);
     }
-    printf('\n');
+    printf("\n");
 }
 
 void convertToUpperCase(char source[], int len){
