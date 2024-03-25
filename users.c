@@ -2,6 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include "utility.c"
+#include "depts.c"
 
 typedef struct User{
     char userName[20];
@@ -27,7 +28,8 @@ User* createUser(){
     scanf("%d", &age);
     getchar();
 
-    printf("Enter new user department[CS|IT|DA|EC|ME|CI|EE|EC|XE|PI]: ");
+    printf("Enter new user department");
+    displayDepartments(DEPTS);
     gets(dept);
     //getchar();
 
@@ -71,4 +73,15 @@ void displayUserDetails(User* user){
     printf("User Dept            : %s\n", user->userDept);
     printf("User Books Issued    : %d\n", user->userNumBooksIssued);
     drawDashDouble(50);
+}
+
+void createUserAndShowStatus(){
+    User* newuser = createUser();
+    if(newuser != NULL){
+        printf("New User: %s created successfully :)\n", newuser->userName);
+        displayUserDetails(newuser);
+
+    }else{
+        printf("Something went wrong :( \n");
+    }
 }
