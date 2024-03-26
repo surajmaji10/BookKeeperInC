@@ -2,6 +2,8 @@
 #include "users.h"
 #include "depts.h"
 
+#include <mysql/mysql.h>
+
 void test(){
     //displayDepartments(DEPTS);
     printf("=========Hello User! Welcome to the book libraray============\n");
@@ -23,11 +25,28 @@ void test(){
     printAllUserFromFile(fptr, NULL);
 }
 
-int main(){
+int main(void)                                                                                       
+{                                                                                                    
+  MYSQL *conn;                                                                                       
 
-    
-
-
-   // test();
-
+  if ((conn = mysql_init(NULL)) == NULL)                                                             
+  {                                                                                                  
+    fprintf(stderr, "Could not init DB\n");                                                 
+    return EXIT_FAILURE;                                                                             
+  }                                                                                                  
+  if (mysql_real_connect(conn, "localhost", "root", "majiak", "hello_akash", 0, NULL, 0) == NULL)             
+  {                                                                                                  
+    fprintf(stderr, "DB Connection Error\n");                                                        
+    return EXIT_FAILURE;                                                                             
+  }                                                                                                  
+  if (mysql_query(conn, "\
+INSERT INTO Users (UserID, Age, Name, Dept)\
+VALUES (124, 25, \'Akash Maji\', \'CS\');\
+") != 0)                   
+  {                                                                                                  
+    fprintf(stderr, "Query Failure\n");                                                              
+    return EXIT_FAILURE;                                                                             
+  }                                                                                                  
+  mysql_close(conn);                                                                                 
+  return EXIT_SUCCESS;                                                                               
 }
