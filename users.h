@@ -25,6 +25,7 @@ int isValidAge(int age);
 int generateUniqueUserID();
 
 int saveUserIntoFile(FILE* fptr, User* user);
+int saveAdminIntoFile(int, int, char*, char*);
 void printUsersInfoFromFile(FILE* fptr, User* user);
 void printUserInfoFromFile(FILE* fptr, User* user);
 

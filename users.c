@@ -8,6 +8,7 @@ int generateUniqueUserID(int n){
 
     int lower = 10000;
     int upper = 99999;
+    srand(time(0));
     int num = (rand() % 
         (upper - lower + 1)) + lower; 
         printf("%d ", num); 
@@ -207,6 +208,28 @@ void printUserInfoFromFile(FILE* fptr, User* user){
         return;
     }
    
+}
+int saveAdminIntoFile(int adminId, int adminAge, char* adminName, char* adminPass){
+
+    FILE *fptr;
+
+   // use appropriate location if you are using MacOS or Linux
+   fptr = fopen("admins_info.txt","r+");
+
+   if(fptr == NULL)
+   {
+      printf("Admin Info NOT Saved to File!");   
+      return 0;            
+   }else{
+    fseek(fptr, 0, SEEK_END);
+    fprintf(fptr,"%d\n%d\n%s\n%s\n",adminId, adminAge, adminName, adminPass);
+    fclose(fptr);
+    printf("Admin Info Saved to File!");
+    return 1;
+
+   }
+
+
 }
 
 int saveUserIntoFile(FILE* fptr, User *user){

@@ -12,6 +12,62 @@
 
 #include <mysql/mysql.h>
 
+int isValidAdmin(char* name, char* pass){
+
+    FILE *fptr;
+
+   // use appropriate location if you are using MacOS or Linux
+   fptr = fopen("admins_info.txt","r+");
+
+   if(fptr == NULL)
+   {
+      printf("Admin Info NOT Read From File!");   
+      return 0;            
+   }else{
+
+    fseek(fptr, 0, SEEK_SET);
+    //adminId, adminAge, adminName, adminPass
+    int idFile, idAge;
+    char nameFile[20];
+    char passFile[20];
+
+    while(fscanf(fptr, "%d", &idFile) != EOF){
+        fgetc(fptr);
+        fscanf(fptr, "%d", &idAge);
+        fgetc(fptr);
+        fscanf(fptr, "%s", nameFile);
+        fgetc(fptr);
+        fscanf(fptr, "%s", passFile);
+        fgetc(fptr);
+
+        //printf("Given:\n%s\n%s\n", name, pass);
+        //printf("Found:\n%s\n%s\n", nameFile, passFile);
+        if(strcmp(name, nameFile) == 0 && strcmp(pass, passFile) == 0){
+            printf("Admin Validated!\n");
+            return 1;
+        }
+    }
+    
+
+    // printf("Given:\n%s\n%s\n", name, pass);
+    // printf("Found:\n%s\n%s\n", nameFile, passFile);
+    // if(strcmp(name, nameFile) == 0 && strcmp(pass, passFile) == 0){
+    //     printf("Admin Validated!\n");
+    //     return 1;
+    // }else{
+        printf("Admin NOT Validated!\n");
+        return 0;
+    //}
+
+
+
+    //return 1;
+
+   }
+
+    
+}
+
 int insertNewUserByAdmin(){
     // displayDepartments(DEPTS);
     printf("====Hello Admin! Please Enter New User Details====\n");
@@ -62,16 +118,16 @@ int insertNewAdminByAdmin(){
         scanf("%s", adminPass);
         getchar();
 
-
+    int savedToFile = saveAdminIntoFile(adminId, adminAge, adminName, adminPass);
 
     char* query = getAdminInsertQuery(adminId, adminAge, adminName, adminPass);
     int savedToDB =  saveAdminIntoDB(query);
 
-   if(savedToDB){
-        printf("Admin Data Saved Into DB!\n");
+   if(savedToDB && savedToFile){
+        printf("Admin Data Saved Into File & DB!\n");
         return 1;
    }else{
-        printf("Admin Data NOT Saved Into  DB!\n");
+        printf("Admin Data NOT Saved Into File & DB!\n");
         return 0;
    }
 
@@ -151,8 +207,17 @@ int adminLogin(){
 
    // printf("You entered:\nID:%s\nPASS:%s\n", adminName, adminPass);
    // printf("You entered:\nID:%ld\nPASS:%ld\n", strlen(adminName), strlen(adminPass));
+
+   if(isValidAdmin(adminName, adminPass)){
     printf("Admin Login Success!\n");
     return ADMIN_LOGIN_SUCCESS;
+
+   }else{
+    printf("Admin Login Failure!\n");
+    return ADMIN_LOGIN_FAILURE;
+
+   }
+    
     
 }
 
