@@ -4,9 +4,6 @@
 
 void test(){
     //displayDepartments(DEPTS);
-}
-int main(){
-
     printf("=========Hello User! Welcome to the book libraray============\n");
 
     FILE* fptr = fopen("users_data.bin", "rb+");
@@ -24,8 +21,13 @@ int main(){
     getUserInfoFromFile(fptr, newuser3);
 
     printAllUserFromFile(fptr, NULL);
+}
+
+int main(){
+
+    
 
 
-    test();
+   // test();
 
 }
