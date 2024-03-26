@@ -2,21 +2,21 @@
 #include "utility.h"
 
 void drawDashDouble(int len){
-    printf("\n");
+    //printf("\n");
     for(int i = 0; i < len; i++){
         printf("%c", '=');
     }
     printf("\n");
 }
 void drawDashSingle(int len){
-    printf("\n");
+    //printf("\n");
     for(int i = 0; i < len; i++){
         printf("%c", '-');
     }
     printf("\n");
 }
 void drawStar(int len){
-    printf("\n");
+    //printf("\n");
     for(int i = 0; i < len; i++){
         printf("%c", '*');
     }
@@ -24,7 +24,7 @@ void drawStar(int len){
 }
 
 void drawChar(char ch, int len){
-    printf("\n");
+   // printf("\n");
     for(int i = 0; i < len; i++){
         printf("%c", ch);
     }

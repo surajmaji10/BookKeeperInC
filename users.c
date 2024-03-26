@@ -2,16 +2,32 @@
 #include "utility.h"
 #include "depts.h"
 #include "users.h"
+#include <time.h>
 
-User* createUser(){
+int generateUniqueUserID(int n){
+
+    int lower = 10000;
+    int upper = 99999;
+    int num = (rand() % 
+        (upper - lower + 1)) + lower; 
+        printf("%d ", num); 
+    return num;
+
+}
+
+User* createNewUser(){
     
     char name[20];
     int age;
     char dept[20];
-    int numBooksIssued;
+    char address[100];
+    int numBooksIssued = 0;
+    int semester = 1;
+    int id;
     char confirm[4];
 
     getUserName(name);
+    getUserAddress(address);
 
     do{ getUserAge(&age); }while(isValidAge(age) == 0);
     
@@ -22,20 +38,25 @@ User* createUser(){
     convertToLowerCase(confirm, -1);
     convertToUpperCase(name, -1);
     convertToUpperCase(dept, -1);
+    convertToUpperCase(address, -1);
 
 
     if(strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0){
 
+        //generate unique id for the user
+        id = generateUniqueUserID(5);
+
         printf("New User Created Successfully!\n");
 
         User* newuser = malloc(sizeof(User));
-
         memset(newuser, 0, sizeof(*newuser));
+
         strcpy(newuser->userName, name);
         strcpy(newuser->userDept, dept);
         newuser->userAge = age;
-        newuser->userNumBooksIssued = 0;
-        newuser->userId = 121;
+        newuser->userNumBooksIssued = numBooksIssued;
+        newuser->userId = id;
+        newuser->userSemester = semester;
         return newuser;
 
     }else if(strcmp(confirm, "no") == 0 || strcmp(confirm, "n") == 0){
@@ -52,25 +73,26 @@ User* createUser(){
 
 void displayUserDetails(User* user){
     drawDashDouble(50);
-    printf("The user details are:");
+    printf("The user details are:\n");
     drawDashSingle(50);
     printf("User Name            : %s\n", user->userName);
     printf("User Age             : %d\n", user->userAge);
     printf("User Dept            : %s\n", user->userDept);
     printf("User Books Issued    : %d\n", user->userNumBooksIssued);
-    printf("User Books Issued    : %d\n", user->userId);
+    //printf("User ID    : %d\n", user->userId);
     drawDashDouble(50);
 }
 
-void displayUserInsertQuery(User* user){
-    char query[500] = {0};
+char* getUserInsertQuery(User* user){
+    char *query = malloc(500);
+    memset(query, 0, 500);
     char id[10] = {0};
     char age[4] = {0};
     
     snprintf(id, 10,"%d", user->userId);
     snprintf(age, 4,"%d", user->userAge);
     
-    strcpy(query, "INSERT INTO Users (UserID, Age, Name, Dept) VALUES (");
+    strcpy(query, "INSERT INTO Users_Info (UserID, Age, Name, Dept) VALUES (");
     strcat(query, id);
     strcat(query, ", ");
     strcat(query, age);
@@ -84,7 +106,35 @@ void displayUserInsertQuery(User* user){
     strcat(query, "\'");
     strcat(query, ");");
 
-    printf("\n%ld  %ld\n%s\n", strlen(query), sizeof(query), query);
+   // printf("\n%ld  %ld\n%s\n", strlen(query), sizeof(query), query);
+   return query;
+}
+
+char* getAdminInsertQuery(int adminId, int adminAge, char* adminName, char* adminPass){
+    char *query = malloc(500);
+    memset(query, 0, 500);
+    char id[10] = {0};
+    char age[4] = {0};
+    
+    snprintf(id, 10,"%d", adminId);
+    snprintf(age, 4,"%d", adminAge);
+    
+    strcpy(query, "INSERT INTO Admins_Info (AdminID, Age, Name, Pass) VALUES (");
+    strcat(query, id);
+    strcat(query, ", ");
+    strcat(query, age);
+    strcat(query, ", ");
+    strcat(query, "\'");
+    strcat(query, adminName);
+    strcat(query, "\'");
+    strcat(query, ", ");
+    strcat(query, "\'");
+    strcat(query, adminPass);
+    strcat(query, "\'");
+    strcat(query, ");");
+
+   // printf("\n%ld  %ld\n%s\n", strlen(query), sizeof(query), query);
+   return query;
 }
 
 void displayUserName(User* user){
@@ -93,19 +143,19 @@ void displayUserName(User* user){
      );
 }
 
-User* createUserAndShowStatus(){
-    User* newuser = createUser();
+User* createNewUserAndShowStatus(){
+    User* newuser = createNewUser();
     if(newuser != NULL){
         printf("New User: %s created successfully :)\n", newuser->userName);
         displayUserDetails(newuser);
-        displayUserInsertQuery(newuser);
+        //getUserInsertQuery(newuser);
     }else{
         printf("Something went wrong :( \n");
     }
     return newuser;
 }
 
-void printAllUserFromFile(FILE* fptr, User* user){
+void printUsersInfoFromFile(FILE* fptr, User* user){
         if(fptr == NULL){
             printf("\nInvalid File Pointer.\n");
             return;
@@ -132,13 +182,13 @@ void printAllUserFromFile(FILE* fptr, User* user){
         return;
 }
 
-void getUserInfoFromFile(FILE* fptr, User* user){
+void printUserInfoFromFile(FILE* fptr, User* user){
     if(fptr == NULL){
         printf("\nInvalid File Pointer.\n");
         return;
     }
     if(user == NULL){
-        printAllUserFromFile(fptr, user);
+        printUsersInfoFromFile(fptr, user);
         return;
     }else if(user != NULL){
         fseek(fptr, 0, SEEK_SET);
@@ -185,6 +235,15 @@ char* getUserDept(char dept[]){
     displayDepartments(getAllDepartments());
     gets(dept);
     return dept;
+
+}
+
+char* getUserAddress(char addr[]){
+    //char name[20];
+    printf("Enter new user address: ");
+    gets(addr);
+    //getchar();
+    return addr;
 
 }
 int getUserAge(int* page){
