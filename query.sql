@@ -5,7 +5,4 @@ CREATE TABLE Users (
     Dept varchar(255)
 );
 
-"
-INSERT INTO Users (UserID, Age, Name, Dept)
-VALUES (111, 25, \'Yoyo Maji\', \'CS\');
-"
+"INSERT INTO Users (UserID, Age, Name, Dept) VALUES (111, 25, \'Yoyo Maji\', \'CS\');"

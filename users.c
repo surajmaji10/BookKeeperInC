@@ -3,7 +3,6 @@
 #include "depts.h"
 #include "users.h"
 
-
 User* createUser(){
     
     char name[20];
@@ -28,12 +27,15 @@ User* createUser(){
     if(strcmp(confirm, "yes") == 0 || strcmp(confirm, "y") == 0){
 
         printf("New User Created Successfully!\n");
+
         User* newuser = malloc(sizeof(User));
+
         memset(newuser, 0, sizeof(*newuser));
         strcpy(newuser->userName, name);
         strcpy(newuser->userDept, dept);
         newuser->userAge = age;
         newuser->userNumBooksIssued = 0;
+        newuser->userId = 121;
         return newuser;
 
     }else if(strcmp(confirm, "no") == 0 || strcmp(confirm, "n") == 0){
@@ -56,8 +58,35 @@ void displayUserDetails(User* user){
     printf("User Age             : %d\n", user->userAge);
     printf("User Dept            : %s\n", user->userDept);
     printf("User Books Issued    : %d\n", user->userNumBooksIssued);
+    printf("User Books Issued    : %d\n", user->userId);
     drawDashDouble(50);
 }
+
+void displayUserInsertQuery(User* user){
+    char query[500] = {0};
+    char id[10] = {0};
+    char age[4] = {0};
+    
+    snprintf(id, 10,"%d", user->userId);
+    snprintf(age, 4,"%d", user->userAge);
+    
+    strcpy(query, "INSERT INTO Users (UserID, Age, Name, Dept) VALUES (");
+    strcat(query, id);
+    strcat(query, ", ");
+    strcat(query, age);
+    strcat(query, ", ");
+    strcat(query, "\'");
+    strcat(query, user->userName);
+    strcat(query, "\'");
+    strcat(query, ", ");
+    strcat(query, "\'");
+    strcat(query, user->userDept);
+    strcat(query, "\'");
+    strcat(query, ");");
+
+    printf("\n%ld  %ld\n%s\n", strlen(query), sizeof(query), query);
+}
+
 void displayUserName(User* user){
      printf(
         "User: %s\n", user->userName    
@@ -69,6 +98,7 @@ User* createUserAndShowStatus(){
     if(newuser != NULL){
         printf("New User: %s created successfully :)\n", newuser->userName);
         displayUserDetails(newuser);
+        displayUserInsertQuery(newuser);
     }else{
         printf("Something went wrong :( \n");
     }

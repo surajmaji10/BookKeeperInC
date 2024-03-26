@@ -3,11 +3,13 @@ typedef struct User{
     int userAge;
     char userDept[10];
     int userNumBooksIssued;
+    int userId;
 } User;
 
 User* createUser();
 User* createUser();
 void displayUserDetails(User* user);
+void displayUserInsertQuery(User* user);
 void displayUserName(User* user);
 User* createUserAndShowStatus();
 char* getUserName(char* name);
