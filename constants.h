@@ -18,3 +18,5 @@ char *DEPTS[] = {
     "ME",
     "CE"
 };
+
+const int NUM_DEPT = 7;

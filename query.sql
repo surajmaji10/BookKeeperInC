@@ -7,5 +7,5 @@ CREATE TABLE Users (
 
 "
 INSERT INTO Users (UserID, Age, Name, Dept)
-VALUES (124, 25, \'Akash Maji\', \'CS\');
+VALUES (111, 25, \'Yoyo Maji\', \'CS\');
 "

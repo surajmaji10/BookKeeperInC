@@ -1,5 +1,4 @@
 #include "common.h"
-#include "constants.h"
 #include "utility.h"
 #include "depts.h"
 #include "users.h"
@@ -17,7 +16,7 @@ User* createUser(){
 
     do{ getUserAge(&age); }while(isValidAge(age) == 0);
     
-    do{ getUserDept(dept); }while(checkValidDepartment(DEPTS, dept) == 0);
+    do{ getUserDept(dept); }while(checkValidDepartment(getAllDepartments(), dept) == 0);
     
     getUserConfirmation(confirm);
 
@@ -153,7 +152,7 @@ char* getUserName(char name[]){
 }
 char* getUserDept(char dept[]){
     printf("Enter new user department");
-    displayDepartments(DEPTS);
+    displayDepartments(getAllDepartments());
     gets(dept);
     return dept;
 

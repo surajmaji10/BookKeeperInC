@@ -5,7 +5,7 @@
 #include <mysql/mysql.h>
 
 void test(){
-    //displayDepartments(DEPTS);
+    // displayDepartments(DEPTS);
     printf("=========Hello User! Welcome to the book libraray============\n");
 
     FILE* fptr = fopen("users_data.bin", "rb+");
@@ -23,11 +23,15 @@ void test(){
     getUserInfoFromFile(fptr, newuser3);
 
     printAllUserFromFile(fptr, NULL);
+
+
+    char** depts = getAllDepartments();
+    //printf("getting adress %p\n", depts);
+    displayDepartments(depts);
 }
 
-int main(void)                                                                                       
-{                                                                                                    
-  MYSQL *conn;                                                                                       
+int queryExecutor(){
+      MYSQL *conn;                                                                                       
 
   if ((conn = mysql_init(NULL)) == NULL)                                                             
   {                                                                                                  
@@ -39,14 +43,28 @@ int main(void)
     fprintf(stderr, "DB Connection Error\n");                                                        
     return EXIT_FAILURE;                                                                             
   }                                                                                                  
-  if (mysql_query(conn, "\
+  if (mysql_query(conn, 
+"\
 INSERT INTO Users (UserID, Age, Name, Dept)\
-VALUES (124, 25, \'Akash Maji\', \'CS\');\
-") != 0)                   
+VALUES (111, 25, \'Yoyo Maji\', \'CS\');\
+"
+) != 0)                   
   {                                                                                                  
     fprintf(stderr, "Query Failure\n");                                                              
     return EXIT_FAILURE;                                                                             
   }                                                                                                  
   mysql_close(conn);                                                                                 
-  return EXIT_SUCCESS;                                                                               
+  return EXIT_SUCCESS;  
+}
+
+
+/*
+
+Execute in terminal as
+$ gcc *.c -lmysqlclient
+
+*/
+
+int main(){
+    test();
 }
